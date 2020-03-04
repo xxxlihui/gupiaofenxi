@@ -4,10 +4,13 @@ import os
 import pandas as pd
 import numpy as np
 from struct import unpack
-dataDir = 'e:\\tdx'
-dataDirTarget = 'e:\\tdxx'
+
+dataDir = '/media/e/tdx/xx'
+dataDirTarget = '/media/e/tdx/fxx'
 
 files = os.listdir(dataDir)
+
+
 # 将通达信的日线文件转换成CSV格式
 
 def yuchuli(df):
@@ -75,22 +78,42 @@ def fenxi():
     for f in files:
         tph = dataDirTarget + "/" + f
         dfs.append({"name": f, "data": pd.read_csv(tph, index_col=0, delimiter=",")})
+        print(tph)
     # 连板数 key=连板数 value=[]列表
     lx = {}
 
-    while start < now:
-        start = start + datetime.timedelta(days=1)
-        startInt = start.year * 10000 + start.month * 100 + start.day
-        for d in dfs:
-            r = d.data.loc[startInt]
-            t = r['连涨天数']
+    startInt = start.year * 10000 + start.month * 100 + start.day
+    for d in dfs:
+        print(d['name'])
+        v = d['name']
+        if v.startswith("sh"):
+            v = "1" + v[2:8]
+        else:
+            v = '0' + v[2:8]
+        p = d['data']
+        try:
+            r = p.loc[startInt]
+            t = int(r['连涨天数'])
             if t > 0:
-                if lx.has_key(t):
-                    v = lx[t]
-                    v.append(r.name)
+                d = lx.get(t)
+                if d == None:
+                    d = [v]
+                    lx[t] = d
                 else:
-                    v = [r.name]
-                    lx[t] = v
+                    d.append(v)
+        except:
+            continue
+    tdir = "/media/e/tdx/l"
+    for i in range(1, 11):
+        target_file = open(tdir + "/L" + str(i)+".blk", 'w')
+        ls = lx.get(i)
+        if ls != None:
+            for k in ls:
+                target_file.write(k)
+                target_file.write("\n")
+        target_file.close()
 
     print(lx)
 
+
+fenxi()

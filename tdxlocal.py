@@ -35,8 +35,13 @@ def day2csv(source_dir, file_name, target_dir):
     target_file.close()
 
 
-source = ['C:\\new_dgzq_v6\\vipdoc\\sh\\lday', 'C:\\new_dgzq_v6\\vipdoc\\sz\\lday']
-target = 'e:\\tdx'
+#source = ['C:\\new_dgzq_v6\\vipdoc\\sh\\lday', 'C:\\new_dgzq_v6\\vipdoc\\sz\\lday']
+#target = 'e:\\tdx'
+
+source = ['/media/e/tdx/lday', '/media/e/tdx/ll/lday']
+target = '/media/e/tdx/xx'
+
+
 for s in source:
     file_list = os.listdir(s)
     for f in file_list:
