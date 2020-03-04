@@ -5,8 +5,10 @@ import pandas as pd
 import numpy as np
 from struct import unpack
 
-dataDir = '/media/e/tdx/xx'
-dataDirTarget = '/media/e/tdx/fxx'
+#dataDir = '/media/e/tdx/xx'
+#dataDirTarget = '/media/e/tdx/fxx'
+dataDir = 'E:\\projects\\gupiaofenxi\\tdx'
+dataDirTarget = 'E:\\projects\\gupiaofenxi\\tdxx'
 
 files = os.listdir(dataDir)
 
@@ -15,24 +17,36 @@ files = os.listdir(dataDir)
 
 def yuchuli(df):
     # 幅度
-    df['gains'] = ((df['close'] - df.shift(1)['close']) / df.shift(1)['close']).round(4)
+    df['涨幅'] = ((df['close'] - df.shift(1)['close']) / df.shift(1)['close']).round(4)
     df['max'] = (df.shift(1)['close'] * 1.1).round(2)
     df['min'] = (df.shift(1)['close'] * 0.9).round(2)
-    df['涨跌停'] = 0  ##涨停标识
+    df['涨停'] = 0  ##涨停标识
+    df['跌停'] = 0  ##涨停标识
     df['连涨天数'] = 0  ##连续涨停天数
     df['破板'] = 0  ##破板
+    df['大肉'] = 0
+    df['大面'] = 0
+    df['成交额大于20亿'] = 0
     m = df.shape[0] - 1
     while m > -1:
         r = df.iloc[m]
         m = m - 1
-        if r['close'] == r['max']:
+        if r['close'] >= r['max']:
             '''涨停'''
-            df.loc[r.name, '涨跌停'] = 1
-        if r['close'] == r['min']:
+            df.loc[r.name, '涨停'] = 1
+        if r['close'] <= r['min']:
             ##跌停
-            df.loc[r.name, '涨跌停'] = -1
-        if r['high'] == r['max'] and r['close'] != r['max']:
-            df.loc[r.name, '连涨天数'] = 1
+            df.loc[r.name, '跌停'] = 1
+        if r['high'] >= r['max'] and r['close'] <= r['max']:
+            df.loc[r.name, '破板'] = 1
+        if r['close'] >= r['max'] or (r['close'] - r['low']) / r['low'] >= 0.1:
+            # 涨停 (最高价-收盘价)/收盘价>=0.1
+            df.loc[r.name, '大肉'] = 1
+        if r['close'] <= r['min'] or (r['high'] - r['close']) / r['close'] >= 0.1:
+            # 涨停 (最高价-收盘价)/收盘价>=0.1
+            df.loc[r.name, '大面'] = 1
+        if r['amount'] >= 20 * 10000 * 10000:
+            df.loc[r.name, '成交额大于20亿'] = 1
     return
 
 
@@ -42,13 +56,13 @@ def lxzt(df):
     while m > -1:
         r = df.iloc[m]
         m = m - 1
-        if r['涨跌停'] == 1:
+        if r['涨停'] == 1:
             ##涨停
             k = m
             while k > -1:
                 rk = df.iloc[k]
                 k = k - 1
-                if rk['涨跌停'] != 1:
+                if rk['涨停'] == 0:
                     break
             df.loc[r.name, '连涨天数'] = m - k
 
@@ -71,7 +85,7 @@ def fenxi():
     ##统计分析
     import datetime
 
-    start = datetime.date(2020, 3, 3)
+    start = datetime.date(2020, 3, 4)
     end = datetime.date.today()
     files = os.listdir(dataDirTarget)
     dfs = []
@@ -103,9 +117,10 @@ def fenxi():
                     d.append(v)
         except:
             continue
-    tdir = "/media/e/tdx/l"
+    #tdir = "/media/e/tdx/l"
+    tdir = "E:\\projects\\gupiaofenxi\\l"
     for i in range(1, 11):
-        target_file = open(tdir + "/L" + str(i)+".blk", 'w')
+        target_file = open(tdir + "/L" + str(i) + ".blk", 'w')
         ls = lx.get(i)
         if ls != None:
             for k in ls:
@@ -115,5 +130,5 @@ def fenxi():
 
     print(lx)
 
-
+chuli()
 fenxi()
