@@ -13,12 +13,15 @@ def day2csv(source_dir, file_name, target_dir):
     target_file = open(target_dir + os.sep + file_name + '.csv', 'w')
     buf_size = len(buf)
     rec_count = buf_size / 32
-    begin = 0
-    end = 32
+    # 取最后的50条记录
+    sc = (rec_count - 50)
+    if sc < 0: sc = 0
+    begin = int(sc * 32)
+    end = begin + 32
     header = str('date') + ',' + str('open') + ',' + str('high') + ',' + str('low') + ',' \
              + str('close') + ',' + str('amount') + ',' + str('vol') + '\n'
     target_file.write(header)
-    for i in range(int(rec_count)):
+    for i in range(int(sc), int(rec_count)):
         # 将字节流转换成Python数据格式
         # I: unsigned int
         # f: float
@@ -32,8 +35,8 @@ def day2csv(source_dir, file_name, target_dir):
     target_file.close()
 
 
-source = ['/media/e/tdx/vipdoc/sh/lday', '/media/e/tdx/vipdoc/sz/lday']
-target = '/media/e/tdxg'
+source = ['C:\\new_dgzq_v6\\vipdoc\\sh\\lday', 'C:\\new_dgzq_v6\\vipdoc\\sz\\lday']
+target = 'e:\\tdx'
 for s in source:
     file_list = os.listdir(s)
     for f in file_list:

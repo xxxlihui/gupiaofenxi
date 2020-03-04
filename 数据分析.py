@@ -1,16 +1,14 @@
 import pandas as pd
 import numpy as np
 import os
-import tushare as ts
 import pandas as pd
 import numpy as np
-import matplotlib as plt
-
-dataDir = '/media/e/tdxg'
-dataDirTarget = '/media/e/tdxgs'
+from struct import unpack
+dataDir = 'e:\\tdx'
+dataDirTarget = 'e:\\tdxx'
 
 files = os.listdir(dataDir)
-
+# 将通达信的日线文件转换成CSV格式
 
 def yuchuli(df):
     # 幅度
@@ -70,8 +68,8 @@ def fenxi():
     ##统计分析
     import datetime
 
-    start = datetime.date(2020, 2, 24)
-    now = datetime.date.today()
+    start = datetime.date(2020, 3, 3)
+    end = datetime.date.today()
     files = os.listdir(dataDirTarget)
     dfs = []
     for f in files:
@@ -93,5 +91,6 @@ def fenxi():
                 else:
                     v = [r.name]
                     lx[t] = v
+
     print(lx)
 
