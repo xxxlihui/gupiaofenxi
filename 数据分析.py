@@ -5,10 +5,10 @@ import pandas as pd
 import numpy as np
 from struct import unpack
 
-#dataDir = '/media/e/tdx/xx'
-#dataDirTarget = '/media/e/tdx/fxx'
-dataDir = 'E:\\projects\\gupiaofenxi\\tdx'
-dataDirTarget = 'E:\\projects\\gupiaofenxi\\tdxx'
+dataDir = '/media/e/tdx/xx'
+dataDirTarget = '/media/e/tdx/fxx'
+#dataDir = 'E:\\projects\\gupiaofenxi\\tdx'
+#dataDirTarget = 'E:\\projects\\gupiaofenxi\\tdxx'
 
 files = os.listdir(dataDir)
 
@@ -37,7 +37,7 @@ def yuchuli(df):
         if r['close'] <= r['min']:
             ##跌停
             df.loc[r.name, '跌停'] = 1
-        if r['high'] >= r['max'] and r['close'] <= r['max']:
+        if r['high'] >= r['max'] and r['close'] < r['high']:
             df.loc[r.name, '破板'] = 1
         if r['close'] >= r['max'] or (r['close'] - r['low']) / r['low'] >= 0.1:
             # 涨停 (最高价-收盘价)/收盘价>=0.1
@@ -85,7 +85,7 @@ def fenxi():
     ##统计分析
     import datetime
 
-    start = datetime.date(2020, 3, 4)
+    start = datetime.date(2020, 3, 5)
     end = datetime.date.today()
     files = os.listdir(dataDirTarget)
     dfs = []
@@ -110,15 +110,16 @@ def fenxi():
             t = int(r['连涨天数'])
             if t > 0:
                 d = lx.get(t)
-                if d == None:
+                if d is None:
                     d = [v]
                     lx[t] = d
                 else:
                     d.append(v)
         except:
             continue
-    #tdir = "/media/e/tdx/l"
-    tdir = "E:\\projects\\gupiaofenxi\\l"
+    tdir = "/media/e/tdx/l"
+    #tdir = "E:\\projects\\gupiaofenxi\\l"
+    cddp_file = open(tdir + "/CDDP.blk", 'w')
     for i in range(1, 11):
         target_file = open(tdir + "/L" + str(i) + ".blk", 'w')
         ls = lx.get(i)
@@ -126,9 +127,11 @@ def fenxi():
             for k in ls:
                 target_file.write(k)
                 target_file.write("\n")
+                cddp_file.write(k)
+                cddp_file.write("\n")
         target_file.close()
-
+    cddp_file.close()
     print(lx)
 
-chuli()
+#chuli()
 fenxi()

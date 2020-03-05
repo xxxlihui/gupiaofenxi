@@ -38,8 +38,8 @@ def day2csv(source_dir, file_name, target_dir):
 source = ['C:\\new_dgzq_v6\\vipdoc\\sh\\lday', 'C:\\new_dgzq_v6\\vipdoc\\sz\\lday']
 target = 'E:\\projects\\gupiaofenxi\\tdx'
 
-#source = ['/media/e/tdx/lday', '/media/e/tdx/ll/lday']
-#target = '/media/e/tdx/xx'
+source = ['/media/e/tdx/lday', '/media/e/tdx/ll/lday']
+target = '/media/e/tdx/xx'
 
 
 for s in source:
@@ -47,4 +47,5 @@ for s in source:
     for f in file_list:
         if f.startswith("sh600") or f.startswith("sz00") or \
                 f.startswith("sz30"):
+            print(f)
             day2csv(s, f, target)
