@@ -5,10 +5,10 @@ import pandas as pd
 import numpy as np
 from struct import unpack
 
-dataDir = '/media/e/tdx/xx'
-dataDirTarget = '/media/e/tdx/fxx'
-#dataDir = 'E:\\projects\\gupiaofenxi\\tdx'
-#dataDirTarget = 'E:\\projects\\gupiaofenxi\\tdxx'
+#dataDir = '/media/e/tdx/xx'
+#dataDirTarget = '/media/e/tdx/fxx'
+dataDir = 'E:\\projects\\gupiaofenxi\\tdx'
+dataDirTarget = 'E:\\projects\\gupiaofenxi\\tdxx'
 
 files = os.listdir(dataDir)
 
@@ -85,7 +85,7 @@ def fenxi():
     ##统计分析
     import datetime
 
-    start = datetime.date(2020, 3, 5)
+    start = datetime.date(2020, 3, 6)
     end = datetime.date.today()
     files = os.listdir(dataDirTarget)
     dfs = []
@@ -117,8 +117,8 @@ def fenxi():
                     d.append(v)
         except:
             continue
-    tdir = "/media/e/tdx/l"
-    #tdir = "E:\\projects\\gupiaofenxi\\l"
+    #tdir = "/media/e/tdx/l"
+    tdir = "E:\\projects\\gupiaofenxi\\l"
     cddp_file = open(tdir + "/CDDP.blk", 'w')
     for i in range(1, 11):
         target_file = open(tdir + "/L" + str(i) + ".blk", 'w')
@@ -133,5 +133,5 @@ def fenxi():
     cddp_file.close()
     print(lx)
 
-#chuli()
+chuli()
 fenxi()
