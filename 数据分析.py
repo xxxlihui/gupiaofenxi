@@ -1,3 +1,6 @@
+import platform
+import shutil
+
 import pandas as pd
 import numpy as np
 import os
@@ -5,10 +8,11 @@ import pandas as pd
 import numpy as np
 from struct import unpack
 
-#dataDir = '/media/e/tdx/xx'
-#dataDirTarget = '/media/e/tdx/fxx'
-dataDir = 'E:\\projects\\gupiaofenxi\\tdx'
-dataDirTarget = 'E:\\projects\\gupiaofenxi\\tdxx'
+dataDir = '/media/e/tdx/xx'
+dataDirTarget = '/media/e/tdx/fxx'
+if platform.system() == 'Windows':
+    dataDir = 'E:\\projects\\gupiaofenxi\\tdx'
+    dataDirTarget = 'E:\\projects\\gupiaofenxi\\tdxx'
 
 files = os.listdir(dataDir)
 
@@ -117,8 +121,9 @@ def fenxi():
                     d.append(v)
         except:
             continue
-    #tdir = "/media/e/tdx/l"
-    tdir = "E:\\projects\\gupiaofenxi\\l"
+    tdir = "/media/e/tdx/l"
+    if platform.system() == 'Windows':
+        tdir = "E:\\projects\\gupiaofenxi\\l"
     cddp_file = open(tdir + "/CDDP.blk", 'w')
     for i in range(1, 11):
         target_file = open(tdir + "/L" + str(i) + ".blk", 'w')
@@ -132,6 +137,11 @@ def fenxi():
         target_file.close()
     cddp_file.close()
     print(lx)
+    if platform.system() == 'Linux':
+        d = "/home/li/PycharmProjects/untitled/l"
+        shutil.rmtree(d )
+        shutil.copytree(tdir, d)
+
 
 chuli()
 fenxi()
