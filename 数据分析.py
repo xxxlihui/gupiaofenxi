@@ -85,11 +85,19 @@ def chuli():
         df.to_csv(tph)
 
 
+def copy(src, target):
+    filelist = os.listdir(src)
+    for f in filelist:
+        if os.path.exists(target + os.sep + f):
+            os.remove(target + os.sep + f)
+        shutil.copy(src + os.sep + f, target + os.sep + f)
+
+
 def fenxi():
     ##统计分析
     import datetime
 
-    start = datetime.date(2020, 3, 9)
+    start = datetime.date(2020, 3, 10)
     end = datetime.date.today()
     files = os.listdir(dataDirTarget)
     dfs = []
@@ -139,8 +147,10 @@ def fenxi():
     print(lx)
     if platform.system() == 'Linux':
         d = "/home/li/PycharmProjects/untitled/l"
-        shutil.rmtree(d )
-        shutil.copytree(tdir, d)
+        copy(tdir, d)
+    else:
+        d = "C:\\new_dgzq_v6\\T0002\\blocknew"
+        copy(tdir, d)
 
 
 chuli()
