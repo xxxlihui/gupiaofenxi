@@ -91,6 +91,7 @@ def fenxi():
 
     start = datetime.date(2020, 3, 9)
     end = datetime.date.today()
+    start=end
     files = os.listdir(dataDirTarget)
     dfs = []
     for f in files:
