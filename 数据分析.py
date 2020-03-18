@@ -97,8 +97,9 @@ def fenxi():
     ##统计分析
     import datetime
 
-    start = datetime.date(2020, 3, 10)
+    start = datetime.date(2020, 3, 13)
     end = datetime.date.today()
+    #start=end
     files = os.listdir(dataDirTarget)
     dfs = []
     for f in files:
